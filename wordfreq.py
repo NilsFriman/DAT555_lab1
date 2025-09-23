@@ -49,6 +49,7 @@ def tokenize(document):
                 token = character
                 token_type = character_type
         
-        tokens.append(token)
+        if token:  # Appends the token in progress, if there is one
+            tokens.append(token)
     
     return tokens
