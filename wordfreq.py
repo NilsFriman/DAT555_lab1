@@ -63,3 +63,17 @@ def tokenize(document):
 
     # Our list of tokens is done. Returns the list
     return tokens
+
+#Counting
+def countWords(words, stopWords):
+
+    counter = {}
+
+    for element in words: 
+        if element not in stopWords:
+            if element not in counter:
+                counter[element] = 0
+            counter[element] += 1
+
+    return counter  
+
