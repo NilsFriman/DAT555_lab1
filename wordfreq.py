@@ -1,68 +1,50 @@
-# TODO: The function lacks exception handling. It assumes that document is a list of strings.
 def tokenize(document):
 
-    words = []  # Creates an empty list of words
+    tokens = []  # Empty list of tokens, which we will not fill.
 
     for line in document:
-        for word in line.lower().split():  # Separates each string into "words" defined by spaces, and makes sure everything is lowercase
-            words.append(word)  # Fills the list of words
 
-    # We still need to handle words with:
-    # 1. letters AND numbers
-    # 2. special characters
+        start = 0  # Starting index of token substring
+        end = 0  # Ending index of token substring (non-inclusive)
 
-    # A help function to find the type of a character
-    def char_type(checking_character):
+        token_type = None  # The type of token we are currently working with. None means we aren't currently building a token
 
-        letters = "abcdefghijklmnopqrstuvwxyz"
-        numbers = "0123456789"
+        for character in line:
 
-        if checking_character in letters:
-            return "letter"
-        elif checking_character in numbers:
-            return "number"
-        else:
-            return "special"
+            # We find out the type of character we are working with
+            if character.isalpha(): character_type = "letter"
+            elif character.isdigit(): character_type = "digit"
+            else: character_type = None
 
-    tokens = []  # Creates an empty list of tokens
+            if character_type:  # We are working with a digit or letter
 
-    for word in words:  # Loops over every lowercase, space separated word
+                if token_type and token_type != character_type:  # Token in progress, but the type doesn't match
+                    tokens.append(line[start: end])  # Finish the token
 
-        # Creates empty variables which define the "token in progress"
-        token = ""
-        token_type = None
+                end += 1  # Increment the index, regardless of if we start a new token or not
 
-        for character in word:  # Loops over every character in each word
+                if token_type != character_type:  # The types don't match -> we start a new token
+                    start = end - 1
+                    token_type = character_type
 
-            character_type = char_type(character)
+            else:  # We are working with a space or special character
+                
+                if token_type:  # Token in progress
+                    tokens.append(line[start: end].lower())  # Finish the token
+                    token_type = None  # Reset the token type
+                
+                if not character.isspace():  # We are working with a special character
+                    tokens.append(line[end])  # Add the character
 
-            if character_type == token_type:  # The character matches the token in progress
-                token += character
+                # Increment indices
+                end += 1
+                start = end
 
-            elif token:  # The character doesn't match an existing token in progress
+        if token_type:  # Token in progress when we are finished with the whole line
+            tokens.append(line[start: end].lower())  # Add the token
 
-                tokens.append(token)  # Adds the token to the list of tokens
-                token = character  # Starts a new token with the current character
-                token_type = character_type  # Updates character type
-
-                if token_type == "special":  
-                    
-                    # If it is a special character, we need to add it immediately,
-                    # since tokens with special characters are only one character long
-
-                    tokens.append(token)
-                    token = ""
-                    token_type = None
-
-            else:  # New token is being started (a token doesn't exist right now)
-                token = character
-                token_type = character_type
-
-        if token:  # Appends the token in progress when a word is completed, if there is one
-            tokens.append(token)
-
-    # Our list of tokens is done. Returns the list
     return tokens
+
 
 #Counting
 def countWords(words, stopWords):
