@@ -1,6 +1,6 @@
 def tokenize(document):
 
-    tokens = []  # Empty list of tokens, which we will not fill.
+    tokens = []  # Empty list of tokens, which we will fill.
 
     for line in document:
 
