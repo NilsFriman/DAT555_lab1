@@ -77,3 +77,13 @@ def countWords(words, stopWords):
 
     return counter  
 
+#Printing
+def printTopMost(frequencies,n):
+    sorted_freq = sorted(frequencies.items(), key=lambda x: -x[1])
+    if sorted_freq != []:
+        for i in range(n):
+            word = sorted_freq[i][0]
+            occurence = str(sorted_freq[i][1])
+            table_freq = word.ljust(20) + occurence.rjust(5)
+            print(table_freq)
+
