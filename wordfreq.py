@@ -12,14 +12,17 @@ def tokenize(document):
         for character in line:
 
             # We find out the type of character we are working with
-            if character.isalpha(): character_type = "letter"
-            elif character.isdigit(): character_type = "digit"
-            else: character_type = None
+            if character.isalpha():
+                character_type = "letter"
+            elif character.isdigit():
+                character_type = "digit"
+            else:  # Must be a special character or blank space
+                character_type = None
 
             if character_type:  # We are working with a digit or letter
 
                 if token_type and token_type != character_type:  # Token in progress, but the type doesn't match
-                    tokens.append(line[start: end])  # Finish the token
+                    tokens.append(line[start: end].lower())  # Finish the token
 
                 end += 1  # Increment the index, regardless of if we start a new token or not
 
@@ -28,11 +31,11 @@ def tokenize(document):
                     token_type = character_type
 
             else:  # We are working with a space or special character
-                
+
                 if token_type:  # Token in progress
                     tokens.append(line[start: end].lower())  # Finish the token
                     token_type = None  # Reset the token type
-                
+
                 if not character.isspace():  # We are working with a special character
                     tokens.append(line[end])  # Add the character
 
