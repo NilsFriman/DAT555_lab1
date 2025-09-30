@@ -46,26 +46,33 @@ def tokenize(document):
     return tokens
 
 
-#Counting
 def countWords(words, stopWords):
 
-    counter = {}
+    counter = {} 
 
     for element in words: 
-        if element not in stopWords:
-            if element not in counter:
-                counter[element] = 0
-            counter[element] += 1
+        
+        if element not in stopWords: 
+
+            if element in counter:
+                counter[element] += 1 # Already existing element
+
+            else:
+                counter[element] = 1 # New element
 
     return counter  
 
-#Printing
+
 def printTopMost(frequencies,n):
-    sorted_freq = sorted(frequencies.items(), key=lambda x: -x[1])
-    if sorted_freq != []:
+
+    sorted_freq = sorted(frequencies.items(), key=lambda x: -x[1]) # Creates a list of tuples from the dictionary, and sorts it based on the negative frequency
+
+    if sorted_freq != []: # Checks if the list contains something
         for i in range(n):
+
             word = sorted_freq[i][0]
-            occurence = str(sorted_freq[i][1])
-            table_freq = word.ljust(20) + occurence.rjust(5)
-            print(table_freq)
+            frequency = str(sorted_freq[i][1])
+
+            word_frequency = word.ljust(20) + frequency.rjust(5) # Line with word and its frequency adjusted with the right amount of spaces
+            print(word_frequency) 
 
